@@ -129,7 +129,7 @@ The format was made to be written by AI agents. Point yours at [AGENTS.md](AGENT
 |---|---|
 | `npm run studio` | Remotion Studio with the templates, the showcase and any single drawing |
 | `npm run find -- orbit` | ready examples by name, purpose or what they use, with their lines (no words: the catalog) |
-| `npm run look -- atom` | one drawing at three moments, light and night, in `out/look.png` |
+| `npm run look -- atom` | one drawing at three moments, light and night, in `out/look.png`, plus motion checks as text |
 | `npm run still` / `npm run still:night` | one frame of the whole library in `out/` |
 | `npm run showcase` | `out/showcase.mp4`, everything animating |
 | `npm run validate` | types and tests |
@@ -154,7 +154,7 @@ src/engine/             the engine (it knows no drawing)
   index.ts              the engine alone
 src/Root.tsx, Showcase.tsx   the compositions of the Studio
 test/                   tests of the math and of the whole library
-tools/                  find, look, pixel comparison and render props
+tools/                  find, look and its checks, pixel comparison and render props
 ```
 
 ## Docs

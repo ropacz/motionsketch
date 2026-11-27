@@ -1,6 +1,6 @@
 // One image to check a drawing: three moments of it, on light and dark. Few tokens for an agent to read.
 //   node tools/look.mjs name [other-name] [--at=0.3,1.5,4]
-// Data errors are printed before anything is rendered.
+// Data errors are printed before anything is rendered; after the image come the motion checks (`check.mjs`).
 import { spawnSync } from 'node:child_process';
 import { mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
@@ -8,6 +8,7 @@ import { fileURLToPath } from 'node:url';
 import { drawingErrors } from '../src/engine/geometry/validate.ts';
 import { unknownName } from '../src/engine/geometry/suggest.ts';
 import { DRAWINGS } from '../src/library/drawings/index.ts';
+import { MOMENTS, PROBE, motionWarnings } from './check.mjs';
 
 const fail = (message) => {
   console.error(message);
@@ -31,12 +32,19 @@ for (const name of names) {
 }
 
 mkdirSync('out', { recursive: true });
-writeFileSync('out/look.json', JSON.stringify({ names, at }));
 const cli = 'node_modules/@remotion/cli/remotion-cli.js';
-const run = spawnSync(process.execPath, [cli, 'still', 'src/index.ts', 'Sheet', 'out/look.png', '--props=out/look.json'], { encoding: 'utf8' });
-const log = `${run.stdout}${run.stderr}`;
-writeFileSync('out/look.log', log);
-if (run.status !== 0) fail(`${log.split('\n').slice(-25).join('\n')}\nrender failed; full log in out/look.log`);
+/** Renders a composition to out/<file>.png, quiet unless it fails. */
+const render = (composition, file, props) => {
+  writeFileSync(`out/${file}.json`, JSON.stringify(props));
+  const run = spawnSync(process.execPath, [cli, 'still', 'src/index.ts', composition, `out/${file}.png`, `--props=out/${file}.json`], { encoding: 'utf8' });
+  const log = `${run.stdout}${run.stderr}`;
+  writeFileSync(`out/${file}.log`, log);
+  if (run.status !== 0) fail(`${log.split('\n').slice(-25).join('\n')}\nrender failed; full log in out/${file}.log`);
+  return `out/${file}.png`;
+};
 
-const png = readFileSync('out/look.png');
+const png = readFileSync(render('Sheet', 'look', { names, at }));
 console.log(`out/look.png ${png.readUInt32BE(16)}x${png.readUInt32BE(20)} · rows: ${names.join(', ')} (light, night) · columns: t = ${at.join(', ')} s`);
+
+const warnings = motionWarnings(render('Probe', 'look-probe', { names, at: MOMENTS, ...PROBE }), names).flat();
+console.log(warnings.length ? warnings.map((w) => `warning: ${w}`).join('\n') : 'motion check: it moves and stays in the box');

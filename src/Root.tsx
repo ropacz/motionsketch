@@ -3,7 +3,7 @@ import { Composition, Folder } from 'remotion';
 
 import { EXAMPLES } from '../examples/index.ts';
 
-import { Sheet, sheetSize, showcaseHeight, showcaseWidth, SingleDrawing, Showcase, type ShowcaseProps } from './Showcase.tsx';
+import { Probe, probeSize, Sheet, sheetSize, showcaseHeight, showcaseWidth, SingleDrawing, Showcase, type ShowcaseProps } from './Showcase.tsx';
 
 const FPS = 30;
 
@@ -28,6 +28,16 @@ export const Root: React.FC = () => (
       durationInFrames={1}
       defaultProps={{ names: ['atom'], at: [0.3, 1.5, 4] }}
       calculateMetadata={({ props }) => sheetSize(props)}
+    />
+    <Composition
+      id="Probe"
+      component={Probe}
+      fps={FPS}
+      width={2400}
+      height={300}
+      durationInFrames={1}
+      defaultProps={{ names: ['atom'], at: [1.5, 5], cell: 300, size: 200 }}
+      calculateMetadata={({ props }) => probeSize(props)}
     />
     <Folder name="Examples">
       {EXAMPLES.map(({ id, component, width, height, seconds }) => (

@@ -70,7 +70,30 @@ export const Sheet: React.FC<SheetProps> = ({ names, at }) => {
   );
 };
 
-export const SingleDrawing:React.FC<{ name: string; palette?: string; options?: Record<string, unknown> }> = ({ name, palette, options }) => {
+export type ProbeProps = { names: string[]; at: number[]; cell: number; size: number };
+export const probeSize = ({ names, at, cell }: ProbeProps) => ({ width: at.length * cell, height: names.length * cell });
+
+/** For the checks of `npm run look`: no background, a row per drawing, a column per moment, each clipped to its cell. */
+export const Probe: React.FC<ProbeProps> = (props) => {
+  useState(() => loadFonts());
+  const { names, at, cell, size } = props;
+  const palette = getPalette('light');
+  return (
+    <AbsoluteFill>
+      <svg {...probeSize(props)}>
+        {names.map((name, row) =>
+          at.map((t, column) => (
+            <svg key={`${name}-${column}`} x={column * cell} y={row * cell} width={cell} height={cell}>
+              <Piece name={name} t={t} palette={palette} x={cell / 2} y={cell / 2} size={size} instance={`probe-${row}-${column}`} />
+            </svg>
+          )),
+        )}
+      </svg>
+    </AbsoluteFill>
+  );
+};
+
+export const SingleDrawing: React.FC<{ name: string; palette?: string; options?: Record<string, unknown> }> = ({ name, palette, options }) => {
   useState(() => loadFonts());
   const p = getPalette(palette);
   const { fps, width, height } = useVideoConfig();
