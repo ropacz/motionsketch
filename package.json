@@ -37,7 +37,9 @@
     "showcase": "remotion render src/index.ts Showcase out/showcase.mp4",
     "still": "remotion still src/index.ts Showcase out/showcase.png --frame=45",
     "still:night": "remotion still src/index.ts Showcase out/showcase-night.png --frame=45 --props=tools/night.json",
-    "test": "node --test \"test/*.test.ts\"",
+    "find": "node tools/find.mjs",
+    "look":"node tools/look.mjs",
+    "test":"node --test \"test/*.test.ts\"",
     "validate": "tsc -p . && npm test"
   },
   "peerDependencies": {

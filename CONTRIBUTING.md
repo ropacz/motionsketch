@@ -22,7 +22,7 @@ npm run validate    # types and tests
 ## Before the pull request
 
 1. `npm run validate` passes. New math comes with a test in `test/`.
-2. Look at the result: `npm run still` and `npm run still:night`. Put an image of what changed in the pull request.
+2. Look at the result: `npm run look -- name` for one drawing, `npm run still` and `npm run still:night` for many. Put an image of what changed in the pull request.
 3. For a refactor, the render must be identical. Render before and after and run `node tools/compare.mjs before.png after.png`.
 
 ## Reporting a bug

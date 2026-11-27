@@ -61,12 +61,13 @@ A drawing is **data**: layers that are cheap to write, which the engine (`engine
 
 **Checklist:**
 
+0. Look for a ready block: `npm run find` (catalog and kit parts), `npm run find -- biped walk` (all words must match a name, a purpose or something the layers use). Read only the lines it points to; reuse a drawing as a group or adapt it.
 1. Primitive mold first (the body in 3 to 5 large shapes); details after.
 2. Parametric shape before `curve`; `curve` before `path`.
 3. `anchor` instead of coordinates ("door inside-bottom of the wall"); `x`/`y` only as an adjustment.
 4. `use` for parts (wheel, window, eye...); a new part that repeats goes into the kit.
 5. Up to ~30 lines; one rhythm of life (spin, sway, blink, rise) per moving part.
-6. One critique round: 2 frames of the showcase, on a light background.
+6. One critique round with `npm run look -- name`.
 
 Example (a planet with a moon passing behind it):
 
@@ -111,7 +112,7 @@ const SHOTS: Shot[] = [
 
 ## Look before you call it done
 
-- The render is what counts: look at frames (entrance, middle, a later one) before reading the data again, on a **light and a dark** background (`npm run still`, `npm run still:night`).
+- The render is what counts: look at frames (entrance, middle, a later one) before reading the data again, on a **light and a dark** background. `npm run look -- name` puts all of that in one image, `out/look.png`, after checking the data (errors come out as text, without rendering). `--at=0.9,1.1,1.3` picks the moments, to follow a quick event; two names compare two drawings. The whole library (`npm run still`, `npm run still:night`) is for changes that reach many drawings: it is large, and each drawing gets small when the image is scaled down.
 - Fix the 3 worst problems first: shape and reading before finish.
 - Few and large details: small ones disappear on a phone.
 - One lead, one light, up to 3 moving elements. Things arrive easing out and leave easing in.

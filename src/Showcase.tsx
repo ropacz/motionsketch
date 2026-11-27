@@ -40,7 +40,37 @@ export const Showcase: React.FC<ShowcaseProps> = (props) => {
   );
 };
 
-export const SingleDrawing: React.FC<{ name: string; palette?: string; options?: Record<string, unknown> }> = ({ name, palette, options }) => {
+export type SheetProps = { names: string[]; at: number[] };
+const SHEET = { cell: 300, size: 220 };
+const SHEET_PALETTES = ['light', 'night'];
+export const sheetSize = ({ names, at }: SheetProps) => ({ width: at.length * SHEET.cell, height: names.length * SHEET_PALETTES.length * SHEET.cell });
+
+/** For `npm run look`: a row per drawing and background, a column per moment (seconds). */
+export const Sheet: React.FC<SheetProps> = ({ names, at }) => {
+  useState(() => loadFonts());
+  const { width } = sheetSize({ names, at });
+  const rows = names.flatMap((name) => SHEET_PALETTES.map((palette) => ({ name, palette: getPalette(palette), key: `${name}-${palette}` })));
+  return (
+    <AbsoluteFill>
+      {rows.map(({ name, palette, key }) => (
+        <div key={key} style={{ ...palette.background, width, height: SHEET.cell }}>
+          <svg width={width} height={SHEET.cell}>
+            {at.map((t, i) => (
+              <g key={i}>
+                <Piece name={name} t={t} palette={palette} x={(i + 0.5) * SHEET.cell} y={SHEET.cell / 2} size={SHEET.size} instance={`${key}-${i}`} />
+                <text x={i * SHEET.cell + 8} y={SHEET.cell - 8} fontFamily={palette.mono} fontSize={16} fill={palette.backgroundInk} opacity={0.7}>
+                  {name} · {t}s
+                </text>
+              </g>
+            ))}
+          </svg>
+        </div>
+      ))}
+    </AbsoluteFill>
+  );
+};
+
+export const SingleDrawing:React.FC<{ name: string; palette?: string; options?: Record<string, unknown> }> = ({ name, palette, options }) => {
   useState(() => loadFonts());
   const p = getPalette(palette);
   const { fps, width, height } = useVideoConfig();

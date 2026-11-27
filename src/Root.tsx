@@ -3,7 +3,7 @@ import { Composition, Folder } from 'remotion';
 
 import { EXAMPLES } from '../examples/index.ts';
 
-import { showcaseHeight, showcaseWidth, SingleDrawing, Showcase, type ShowcaseProps } from './Showcase.tsx';
+import { Sheet, sheetSize, showcaseHeight, showcaseWidth, SingleDrawing, Showcase, type ShowcaseProps } from './Showcase.tsx';
 
 const FPS = 30;
 
@@ -18,6 +18,16 @@ export const Root: React.FC = () => (
       durationInFrames={FPS * 10}
       defaultProps={{ palette: 'light' } as ShowcaseProps}
       calculateMetadata={({ props }) => ({ height: showcaseHeight(props as ShowcaseProps) })}
+    />
+    <Composition
+      id="Sheet"
+      component={Sheet}
+      fps={FPS}
+      width={900}
+      height={600}
+      durationInFrames={1}
+      defaultProps={{ names: ['atom'], at: [0.3, 1.5, 4] }}
+      calculateMetadata={({ props }) => sheetSize(props)}
     />
     <Folder name="Examples">
       {EXAMPLES.map(({ id, component, width, height, seconds }) => (
