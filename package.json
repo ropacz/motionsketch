@@ -1,0 +1,63 @@
+{
+  "name": "motionsketch",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Animated drawings as data for Remotion (React/SVG): illustrations and objects described in a few lines of data, deterministic per frame.",
+  "keywords": [
+    "remotion",
+    "react",
+    "svg",
+    "animation",
+    "motion-graphics",
+    "illustration",
+    "dsl",
+    "generative",
+    "video"
+  ],
+  "license": "MIT",
+  "author": "Rodrigo Paczkovski",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ropacz/motionsketch.git"
+  },
+  "exports": {
+    ".": "./src/library/index.ts",
+    "./engine": "./src/engine/index.ts"
+  },
+  "files": [
+    "src/engine",
+    "src/library",
+    "public/fonts",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "studio": "remotion studio src/index.ts",
+    "showcase": "remotion render src/index.ts Showcase out/showcase.mp4",
+    "still": "remotion still src/index.ts Showcase out/showcase.png --frame=45",
+    "still:night": "remotion still src/index.ts Showcase out/showcase-night.png --frame=45 --props=tools/night.json",
+    "test": "node --test \"test/*.test.ts\"",
+    "validate": "tsc -p . && npm test"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0",
+    "remotion": "^4.0.0"
+  },
+  "devDependencies": {
+    "@remotion/cli": "4.0.543",
+    "@types/node": "26.6.6",
+    "@types/react": "19.2.2",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "remotion": "4.0.543",
+    "typescript": "5.6.3"
+  },
+  "homepage": "https://github.com/ropacz/motionsketch#readme",
+  "bugs": {
+    "url": "https://github.com/ropacz/motionsketch/issues"
+  },
+  "engines": {
+    "node": ">=22.18"
+  }
+}
